@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "program_hash": "345b0a230c7a609c",
+  "pc_annotations": [
+    {
+      "pc": 13,
+      "entries": [
+        {
+          "i": 6,
+          "j": 14,
+          "bound": -5,
+          "proof": [
+            {
+              "kind": "Fact",
+              "i": 6,
+              "j": 8,
+              "c": -1
+            },
+            {
+              "kind": "PredCarry",
+              "i": 8,
+              "j": 14,
+              "c": -4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

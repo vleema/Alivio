@@ -1,0 +1,19 @@
+[package]
+name = "alivio"
+version = "0.1.0"
+edition = "2024"
+description = "Userspace mirror of the Linux kernel BPF verifier with BCF proof-bundle generation"
+repository = "https://github.com/rutgers-apl/Alivio"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+anyhow = "1.0"
+goblin = "0.10.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+chrono = "0.4"
+either = "1.15"
+rayon = "1.10"
+clap = { version = "4.5", features = ["derive"] }
+siphasher = "1.0"
