@@ -1,4 +1,4 @@
-# alivio - userspace verifier and proof generator for the Proof-Carrying-BPF framework
+# Alivio - userspace verifier and proof generator for the Proof-Carrying-BPF framework
 
 A user-space mirror of the Linux kernel BPF verifier, written in Rust. Alivio
 verifies the safety of BPF bytecode by reconstructing control flow graphs,
