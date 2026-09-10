@@ -503,15 +503,18 @@ impl StackState {
     /// Stack-MISS → ghost route → env-counter phase shift → the 512/527
     /// checkpoint displacement that extinguishes the demanded route).
     pub fn scrub_spilled_slots_for_write(&mut self, write_off: i16, write_size: usize) {
+        if write_size == 0 {
+            return;
+        }
+        let write_off = i32::from(write_off);
         let first_base = write_off.div_euclid(8) * 8;
-        let last_base = (write_off + write_size as i16 - 1).div_euclid(8) * 8;
-        let mut base = first_base;
-        while base <= last_base {
-            if self.get_slot_kind(base) == Some(StackSlotKind::Spill) {
+        let last_base = (write_off + write_size as i32 - 1).div_euclid(8) * 8;
+        for base in (first_base..=last_base).step_by(8) {
+            if self.get_slot_kind(base as i16) == Some(StackSlotKind::Spill) {
                 for b in base..base + 8 {
-                    if self.get_slot_kind(b).is_some() {
+                    if self.get_slot_kind(b as i16).is_some() {
                         self.insert(
-                            b,
+                            b as i16,
                             SpilledReg {
                                 source_reg: None,
                                 reg_type: RegType::ScalarValue,
@@ -536,7 +539,6 @@ impl StackState {
                     }
                 }
             }
-            base += 8;
         }
     }
 
@@ -851,5 +853,17 @@ impl StackState {
             .filter(|(_, spilled)| spilled.source_reg.is_some_and(|r| live_regs.contains(&r)))
             .map(|(offset, _)| *offset)
             .collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::StackState;
+
+    #[test]
+    fn scrub_at_top_of_i16_range_terminates() {
+        let mut stack = StackState::default();
+        stack.scrub_spilled_slots_for_write(i16::MAX - 1, 1);
+        assert_eq!(stack.allocated_stack, 0);
     }
 }
